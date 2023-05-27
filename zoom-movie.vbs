@@ -12,7 +12,7 @@ Set objFolder = objFSO.GetFolder(currentPath)
 
 ' カレントフォルダ内のファイルを処理
 For Each objFile In objFolder.Files
-    Dim fileName, fileExt
+    Dim fileName, fileExt, strWork
     fileName = objFSO.GetBaseName(objFile.Name)
     fileExt = objFSO.GetExtensionName(objFile.Name)
     
@@ -20,8 +20,11 @@ For Each objFile In objFolder.Files
     If LCase(fileExt) = "mp4" Then
         ' ファイル名にハイフンが含まれていない場合
         If InStr(fileName, "-") = 0 Then
-            ' 時分を追加
-            fileName = fileName & "-" & Replace(FormatDateTime(Now, vbShortTime),":","")
+            strWork = FormatDateTime( Now )
+            strWork = Replace(strWork, ":" , "")
+            strWork = Replace(strWork, "/" , "")
+            strWork = Replace(strWork, " " , "-")
+            fileName = fileName & "-" & Right(strWork,11)
             ' ファイル名を変更
             objFile.Name = fileName & "." & fileExt
         End If
